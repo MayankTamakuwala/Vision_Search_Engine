@@ -1,8 +1,6 @@
 from typing import Iterable
 from .index import Index
 from .postings import Posting
-
-
 class PositionalIndex(Index):
 
     def __init__(self):
@@ -12,6 +10,7 @@ class PositionalIndex(Index):
         if term not in self.positional_index:
             postingList = list()
             postingList.append(Posting(documentId, position))
+            self.positional_index[term] = postingList
         else:
             if self.positional_index[term][-1].doc_id != documentId:
                 self.positional_index[term].append(Posting(documentId, position))

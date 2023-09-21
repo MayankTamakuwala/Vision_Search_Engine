@@ -9,12 +9,12 @@ the same directory as this file."""
 
 def index_corpus(corpus: DocumentCorpus) -> Index:
     token_processor = BasicTokenProcessor()
-    vocabulary = set()
+    # vocabulary = set()
 
-    for d in corpus:
-        englishStream = EnglishTokenStream(d.get_content())
-        for word in englishStream:
-            vocabulary.add(token_processor.process_token(word))
+    # for d in corpus:
+    #     englishStream = EnglishTokenStream(d.get_content())
+    #     for word in englishStream:
+    #         vocabulary.add(token_processor.process_token(word))
         # TODO:
         #   Tokenize the document's content by creating an EnglishTokenStream around the document's .content()
         #   Iterate through the token stream, processing each with token_processor's process_token method.
@@ -45,11 +45,17 @@ if __name__ == "__main__":
 
     # Build the index over this directory.
     index = index_corpus(d)
-    print(index.positional_index)
     # We aren't ready to use a full query parser;
     # for now, we'll only support single-term queries.
-    query = "white"  # hard-coded search for "whale"
-    for p in index.get_postings(query):
-        print(d.get_document(p.doc_id))
+    print("Type exit() to quit the search engine.\n")
+    query = input("Enter the query you wanna search: ")
+    print()
+    while query!="exit()":
+        for p in index.get_postings(query):
+            print(d.get_document(p.doc_id))
+        print()
+        query = input("Enter the query you wanna search: ")
+        print()
+    print("Hope you liked my search engine!")
 
     # TODO: fix this application so the user is asked for a term to search.
