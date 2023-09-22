@@ -1,7 +1,7 @@
 from pathlib import Path
 from documents import DocumentCorpus, DirectoryCorpus
 from indexing import Index, TermDocumentIndex, InvertedIndex, PositionalIndex
-from text import BasicTokenProcessor, EnglishTokenStream
+from text import BasicTokenProcessor, EnglishTokenStream, NewTokenProcessor
 
 """This basic program builds a term-document matrix over the .txt files in 
 the same directory as this file."""

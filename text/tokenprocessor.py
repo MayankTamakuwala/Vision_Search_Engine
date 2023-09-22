@@ -5,7 +5,7 @@ class TokenProcessor(ABC):
     to transform tokens into types and terms."""
 
     @abstractmethod
-    def process_token(self, token : str) -> str:
+    def process_token(self, token : str) -> list[str]:
         """Processes a token into a type."""
         pass
     
