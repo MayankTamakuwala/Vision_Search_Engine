@@ -10,7 +10,28 @@ class OrQuery(QueryComponent):
     def get_postings(self, index : Index) -> list[Posting]:
         result = []
         # TODO: program the merge for an OrQuery, by gathering the postings of the composed QueryComponents and
-		# merging the resulting postings.
+        #  merging the resulting postings.
+        mergeDict = {}
+        temp = []
+        for i in self.components:
+            temp.append(i.get_postings(index))
+
+        noneCount = temp.count(None)
+
+        for _ in range(noneCount):
+            temp.remove(None)
+
+        for i in temp:
+            for j in i:
+                if (len(mergeDict) == 0) or (j.get_doc_id() not in mergeDict):
+                    mergeDict[j.get_doc_id()] = j.get_positions()
+                else:
+                    mergeDict[j.get_doc_id()].extend(j.get_positions())
+                    mergeDict[j.get_doc_id()] = list(set(mergeDict[j.get_doc_id()]))
+
+        for i in mergeDict:
+            result.append(Posting(i, positionList=mergeDict[i]))
+
         return result
 
     def __str__(self):

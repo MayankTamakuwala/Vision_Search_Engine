@@ -10,8 +10,11 @@ class AndQuery(QueryComponent):
 
     def get_postings(self, index : Index) -> list[Posting]:
         result = []
+        # temp = []
+        # for i in self.components:
+        #     temp.append(i.get_postings(index))
         # TODO: program the merge for an AndQuery, by gathering the postings of the composed QueryComponents and
-		# intersecting the resulting postings.
+        #  intersecting the resulting postings.
         return result
 
     def __str__(self):

@@ -2,6 +2,7 @@ from pathlib import Path
 from documents import DocumentCorpus, DirectoryCorpus
 from indexing import Index, TermDocumentIndex, InvertedIndex, PositionalIndex
 from text import BasicTokenProcessor, EnglishTokenStream, NewTokenProcessor
+from querying import PhraseLiteral, QueryComponent, BooleanQueryParser, TermLiteral
 
 """This basic program builds a term-document matrix over the .txt files in 
 the same directory as this file."""
@@ -25,7 +26,7 @@ def index_corpus(corpus: DocumentCorpus) -> Index:
         count = 0
         englishStream = EnglishTokenStream(i.get_content())
         for word in englishStream:
-            document_index.add_term(token_processor.process_token(word), i.id, count)
+            document_index.add_term(token_processor.normalize_type(token_processor.process_token(word)), i.id, count)
             count += 1
 
     return document_index
@@ -51,11 +52,26 @@ if __name__ == "__main__":
     query = input("Enter the query you wanna search: ")
     print()
     while query!="exit()":
-        for p in index.get_postings(query):
-            print(d.get_document(p.doc_id))
-        print()
+
+        if query != "":
+            booleanQuery = BooleanQueryParser.parse_query(query)
+            postings = booleanQuery.get_postings(index)
+            if len(postings) != 0 and postings is not None:
+                for p in postings:
+                    print(d.get_document(p.doc_id))
+                print()
+            else :
+                print(f"Postings not found for \"{query}\"\n")
+        else:
+            print("Your query is empty. Input valid query.\n")
+
         query = input("Enter the query you wanna search: ")
         print()
     print("Hope you liked my search engine!")
-
+    # test = "Mayank-Computer-Science-Student Major + \"New Bedford\"" #Mix
+    # test1 = "\"New Bedford\"" #Phrase Literal
+    # test2 = "Mayank-Computer-Science-Student" #Term Literal
+    # test3 = "Mayank Computer Science Student" #AND Query
+    # test4 = "white + whale" #OR Query
+    # s = BooleanQueryParser.parse_query(test4).get_postings(index)
     # TODO: fix this application so the user is asked for a term to search.

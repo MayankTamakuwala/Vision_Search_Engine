@@ -9,11 +9,11 @@ class PositionalIndex(Index):
     def add_term(self, term: str, documentId: int, position: int):
         if term not in self.positional_index:
             postingList = list()
-            postingList.append(Posting(documentId, position))
+            postingList.append(Posting(documentId, positionNum=position))
             self.positional_index[term] = postingList
         else:
             if self.positional_index[term][-1].doc_id != documentId:
-                self.positional_index[term].append(Posting(documentId, position))
+                self.positional_index[term].append(Posting(documentId, positionNum=position))
             else:
                 self.positional_index[term][-1].positions.append(position)
 
@@ -23,7 +23,3 @@ class PositionalIndex(Index):
             return self.positional_index[term]
         else:
             return None
-
-    def vocabulary(self) -> list[str]:
-        """A (sorted) list of all terms in the index vocabulary."""
-        pass
