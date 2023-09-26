@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
         if query != "":
             booleanQuery = BooleanQueryParser.parse_query(query)
-            postings = booleanQuery.get_postings(index)
+            postings = booleanQuery.get_postings(index, NewTokenProcessor())
             if len(postings) != 0 and postings is not None:
                 for p in postings:
                     print(d.get_document(p.doc_id))

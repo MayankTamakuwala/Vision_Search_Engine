@@ -1,6 +1,5 @@
 from .querycomponent import QueryComponent
 from indexing import Index, Posting
-
 from querying import querycomponent 
 
 class AndQuery(QueryComponent):
@@ -8,7 +7,7 @@ class AndQuery(QueryComponent):
         # please don't rename the "components" field.
         self.components = components
 
-    def get_postings(self, index : Index) -> list[Posting]:
+    def get_postings(self, index : Index, processor) -> list[Posting]:
         result = []
         # temp = []
         # for i in self.components:

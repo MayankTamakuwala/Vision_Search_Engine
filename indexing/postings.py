@@ -9,7 +9,7 @@ class Posting:
         elif positionNum is None and positionList is not None:
             self.positions = positionList
         else:
-            self.positions = None
+            self.positions = []
 
     def get_doc_id(self) -> int:
         return self.doc_id

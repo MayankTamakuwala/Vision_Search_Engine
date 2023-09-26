@@ -9,7 +9,7 @@ class PhraseLiteral(QueryComponent):
     def __init__(self, terms : list[QueryComponent]):
         self.literals = terms
 
-    def get_postings(self, index) -> list[Posting]:
+    def get_postings(self, index, processor) -> list[Posting]:
         return None
         # TODO: program this method. Retrieve the postings for the individual literals in the phrase,
 		# and positional merge them together.
