@@ -11,6 +11,9 @@ class NewTokenProcessor(TokenProcessor):
         if token.count("-") > 0:
             subTokens = token.split("-")
             subTokens.append("".join(subTokens))
+            for _ in range(subTokens.count("")):
+                subTokens.remove("")
+
         else:
             subTokens.append(token)
 

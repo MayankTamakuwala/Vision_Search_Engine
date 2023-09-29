@@ -9,7 +9,7 @@ the same directory as this file."""
 
 
 def index_corpus(corpus: DocumentCorpus) -> Index:
-    token_processor = BasicTokenProcessor()
+    token_processor = NewTokenProcessor()
     # vocabulary = set()
 
     # for d in corpus:
@@ -26,7 +26,8 @@ def index_corpus(corpus: DocumentCorpus) -> Index:
         count = 0
         englishStream = EnglishTokenStream(i.get_content())
         for word in englishStream:
-            document_index.add_term(token_processor.normalize_type(token_processor.process_token(word)), i.id, count)
+            for j in token_processor.normalize_type(token_processor.process_token(word)):
+                document_index.add_term(j, i.id, count)
             count += 1
 
     return document_index
