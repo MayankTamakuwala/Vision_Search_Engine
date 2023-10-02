@@ -9,7 +9,7 @@ class PDFFileDocument(Document):
     def __init__(self, id : int, path : Path):
         super().__init__(id)
         self.path = path
-        self.pdf = PdfReader(self.path)
+        self._pdf = PdfReader(self.path)
 
     @property
     def title(self) -> str:
@@ -17,7 +17,7 @@ class PDFFileDocument(Document):
 
     # returns TextIOWrapper
     def get_content(self) -> Iterable[str]:
-        for i in self.pdf.pages:
+        for i in self._pdf.pages:
             yield i.extract_text()
 
     @staticmethod
