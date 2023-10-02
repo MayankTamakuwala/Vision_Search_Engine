@@ -2,7 +2,8 @@ from pathlib import Path
 from documents import DocumentCorpus, DirectoryCorpus
 from indexing import Index, TermDocumentIndex, InvertedIndex, PositionalIndex
 from text import BasicTokenProcessor, EnglishTokenStream, NewTokenProcessor
-from querying import PhraseLiteral, QueryComponent, BooleanQueryParser, TermLiteral
+from querying import BooleanQueryParser
+import os
 
 """This basic program builds a term-document matrix over the .txt files in 
 the same directory as this file."""
@@ -45,34 +46,35 @@ if __name__ == "__main__":
     corpus_path = Path()
     d = DirectoryCorpus.load_text_directory(corpus_path, ".txt")
 
-    # Build the index over this directory.
+    # ----------------------------------------------------------------------------------------------------------------------
+    # file_list = [f for f in os.listdir(corpus_path) if os.path.isfile(f)]
+    # for i in file_list:
+    #     if ".pdf" in i:
+    #         d = DirectoryCorpus.load_directory(corpus_path, ".pdf")
+    #     elif ".txt" in i:
+    #         d = DirectoryCorpus.load_directory(corpus_path, ".txt")
+    # TODO: Send the list of Directory Corpus to index_corpus() function and loop thru every object to make just ONE index
+    # ----------------------------------------------------------------------------------------------------------------------
+
     index = index_corpus(d)
-    # We aren't ready to use a full query parser;
-    # for now, we'll only support single-term queries.
     print("Type exit() to quit the search engine.\n")
     query = input("Enter the query you wanna search: ")
     print()
     while query!="exit()":
-
         if query != "":
             booleanQuery = BooleanQueryParser.parse_query(query)
             postings = booleanQuery.get_postings(index, NewTokenProcessor())
-            if len(postings) != 0 and postings is not None:
+            if (postings is not None) and len(postings) != 0:
+                print("Postings for", '\033[1;3m' + query + '\033[0m', "are:\n")
                 for p in postings:
                     print(d.get_document(p.doc_id))
                 print()
             else :
-                print(f"Postings not found for \"{query}\"\n")
+                # '\033[1;3m' is for bold and italic and '\033[0m' for closing tag
+                print("Postings not found for", '\033[1;3m' + query + '\033[0m', "\n")
         else:
             print("Your query is empty. Input valid query.\n")
 
         query = input("Enter the query you wanna search: ")
         print()
     print("Hope you liked my search engine!")
-    # test = "Mayank-Computer-Science-Student Major + \"New Bedford\"" #Mix
-    # test1 = "\"New Bedford\"" #Phrase Literal
-    # test2 = "Mayank-Computer-Science-Student" #Term Literal
-    # test3 = "Mayank Computer Science Student" #AND Query
-    # test4 = "white + whale" #OR Query
-    # s = BooleanQueryParser.parse_query(test4).get_postings(index)
-    # TODO: fix this application so the user is asked for a term to search.

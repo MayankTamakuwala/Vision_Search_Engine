@@ -5,6 +5,7 @@ from typing import Callable, Iterable, Iterator
 
 from documents.document import Document
 from . import textfiledocument
+from . import pdffiledocument
 from pathlib import Path
 
 class DirectoryCorpus:
@@ -53,7 +54,12 @@ class DirectoryCorpus:
 
     @staticmethod
     def load_text_directory(path, extension) -> 'DirectoryCorpus':
-        c = DirectoryCorpus(path, 
-                lambda f: f.suffix == extension, 
-                factories={extension: textfiledocument.TextFileDocument.load_from})
+        if extension == ".pdf":
+            c = DirectoryCorpus(path,
+                                lambda f: f.suffix == extension,
+                                factories={extension: pdffiledocument.PDFFileDocument.load_from})
+        else:
+            c = DirectoryCorpus(path,
+                                lambda f: f.suffix == extension,
+                                factories={extension: textfiledocument.TextFileDocument.load_from})
         return c
