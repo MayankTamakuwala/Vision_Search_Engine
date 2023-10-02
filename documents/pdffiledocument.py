@@ -4,7 +4,7 @@ from .document import Document
 from PyPDF2 import PdfReader
 class PDFFileDocument(Document):
     """
-    Represents a document that is saved as a simple text file in the local file system.
+    Represents a document that is saved as a simple PDF file in the local file system.
     """
     def __init__(self, id : int, path : Path):
         super().__init__(id)
@@ -15,7 +15,7 @@ class PDFFileDocument(Document):
     def title(self) -> str:
         return self.path.stem
 
-    # returns TextIOWrapper
+    # returns StringIOWrapper
     def get_content(self) -> Iterable[str]:
         for i in self._pdf.pages:
             yield i.extract_text()
