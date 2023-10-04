@@ -45,6 +45,7 @@ def index_corpus(corpus: DocumentCorpus) -> Index:
 if __name__ == "__main__":
     corpus_path = Path()
     d = DirectoryCorpus.load_text_directory(corpus_path, ".txt")
+    # d = DirectoryCorpus.load_text_directory(corpus_path)
 
     # ----------------------------------------------------------------------------------------------------------------------
     # file_list = [f for f in os.listdir(corpus_path) if os.path.isfile(f)]

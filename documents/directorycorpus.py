@@ -4,8 +4,7 @@ from pyclbr import Function
 from typing import Callable, Iterable, Iterator
 
 from documents.document import Document
-from . import textfiledocument
-from . import pdffiledocument
+from . import textfiledocument, pdffiledocument, jsonfiledocument
 from pathlib import Path
 
 class DirectoryCorpus:
@@ -54,7 +53,11 @@ class DirectoryCorpus:
 
     @staticmethod
     def load_text_directory(path, extension) -> 'DirectoryCorpus':
-        if extension == ".pdf":
+        if extension == ".json":
+            c = DirectoryCorpus(path,
+                                lambda f: f.suffix == extension,
+                                factories={extension: jsonfiledocument.JSONFileDocument.load_from})
+        elif extension == ".pdf":
             c = DirectoryCorpus(path,
                                 lambda f: f.suffix == extension,
                                 factories={extension: pdffiledocument.PDFFileDocument.load_from})
@@ -63,3 +66,13 @@ class DirectoryCorpus:
                                 lambda f: f.suffix == extension,
                                 factories={extension: textfiledocument.TextFileDocument.load_from})
         return c
+
+    # @staticmethod
+    # def load_text_directory(path) -> 'DirectoryCorpus':
+    #     c = DirectoryCorpus(path,
+    #                 lambda f: f.suffix in [".pdf", ".txt", ".json"],
+    #                 factories={".pdf": pdffiledocument.PDFFileDocument.load_from,
+    #                            ".txt":textfiledocument.TextFileDocument.load_from,
+    #                            ".json": jsonfiledocument.JSONFileDocument.load_from
+    #                            })
+    #     return c
