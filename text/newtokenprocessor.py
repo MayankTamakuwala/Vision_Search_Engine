@@ -18,21 +18,21 @@ class NewTokenProcessor(TokenProcessor):
             subTokens.append(token)
 
         for i in range(len(subTokens)):
+            temp = subTokens[i].replace("\'", "")
+            subTokens[i] = temp.replace("\"", "").lower()
+
+        for i in range(len(subTokens)):
 
             start = 0
             end = len(subTokens[i])
 
-            while (not subTokens[i][start].isalnum()) and start < end:
+            while start < end and (not subTokens[i][start].isalnum()):
                 start += 1
 
-            while (not subTokens[i][end - 1].isalnum()) and end > start:
+            while end > start and (not subTokens[i][end - 1].isalnum()):
                 end -= 1
 
             subTokens[i] = subTokens[i][start:end]
-
-        for i in range(len(subTokens)):
-            temp = subTokens[i].replace("\'", "")
-            subTokens[i] = temp.replace("\"", "").lower()
 
         return list(set(subTokens))
 

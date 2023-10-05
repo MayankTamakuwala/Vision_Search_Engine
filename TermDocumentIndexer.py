@@ -43,9 +43,11 @@ def index_corpus(corpus: DocumentCorpus) -> Index:
 
 
 if __name__ == "__main__":
-    corpus_path = Path()
-    d = DirectoryCorpus.load_text_directory(corpus_path, ".txt")
-    # d = DirectoryCorpus.load_text_directory(corpus_path)
+    corpus_path = Path(input("Enter the path of corpus: "))
+    while not corpus_path.exists():
+        # '\033[1;3m' is for bold and italic and '\033[0m' for closing tag
+        corpus_path = Path(input('\033[1;3m' + "\nEnter valid path." + '\033[0m' + "\n\nEnter the path of corpus: "))
+    d = DirectoryCorpus.load_directory(corpus_path)
 
     # ----------------------------------------------------------------------------------------------------------------------
     # file_list = [f for f in os.listdir(corpus_path) if os.path.isfile(f)]
@@ -66,12 +68,11 @@ if __name__ == "__main__":
             booleanQuery = BooleanQueryParser.parse_query(query)
             postings = booleanQuery.get_postings(index, NewTokenProcessor())
             if (postings is not None) and len(postings) != 0:
-                print("Postings for", '\033[1;3m' + query + '\033[0m', "are:\n")
                 for p in postings:
                     print(d.get_document(p.doc_id))
                 print()
+                print("Postings for", '\033[1;3m' + query + '\033[0m', "are in" , '\033[1;3m' + str(len(postings)) + '\033[0m', "documents\n")
             else :
-                # '\033[1;3m' is for bold and italic and '\033[0m' for closing tag
                 print("Postings not found for", '\033[1;3m' + query + '\033[0m', "\n")
         else:
             print("Your query is empty. Input valid query.\n")
