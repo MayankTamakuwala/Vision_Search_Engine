@@ -4,6 +4,7 @@ from indexing import Index, TermDocumentIndex, InvertedIndex, PositionalIndex
 from text import BasicTokenProcessor, EnglishTokenStream, NewTokenProcessor
 from querying import BooleanQueryParser
 import os
+import time
 
 """This basic program builds a term-document matrix over the .txt files in 
 the same directory as this file."""
@@ -11,6 +12,8 @@ the same directory as this file."""
 
 def index_corpus(corpus: DocumentCorpus) -> Index:
     token_processor = NewTokenProcessor()
+    print("\nStarted Indexing...")
+    startTime = time.time()
     # vocabulary = set()
 
     # for d in corpus:
@@ -30,7 +33,8 @@ def index_corpus(corpus: DocumentCorpus) -> Index:
             for j in token_processor.normalize_type(token_processor.process_token(word)):
                 document_index.add_term(j, i.id, count)
             count += 1
-
+    endTime = time.time()
+    print("\nTime take for indexing: {time:.2f} seconds".format(time = endTime-startTime))
     return document_index
 
     # TODO:
@@ -60,7 +64,7 @@ if __name__ == "__main__":
     # ----------------------------------------------------------------------------------------------------------------------
 
     index = index_corpus(d)
-    print("Type exit() to quit the search engine.\n")
+    print("\nType exit() to quit the search engine.\n")
     query = input("Enter the query you wanna search: ")
     print()
     while query!="exit()":
@@ -71,7 +75,12 @@ if __name__ == "__main__":
                 for p in postings:
                     print(d.get_document(p.doc_id))
                 print()
-                print("Postings for", '\033[1;3m' + query + '\033[0m', "are in" , '\033[1;3m' + str(len(postings)) + '\033[0m', "documents\n")
+                if len(postings) == 1:
+                    print("Postings for", '\033[1;3m' + query + '\033[0m', "are in",
+                          '\033[1;3m' + "1" + '\033[0m', "documents\n")
+                else:
+                    print("Postings for", '\033[1;3m' + query + '\033[0m', "are in",
+                          '\033[1;3m' + str(len(postings)) + '\033[0m', "documents\n")
             else :
                 print("Postings not found for", '\033[1;3m' + query + '\033[0m', "\n")
         else:
