@@ -17,8 +17,7 @@ class JSONFileDocument(Document):
 
     # returns TextIOWrapper
     def get_content(self) -> Iterable[str]:
-        for i in self._jsonfile:
-            yield self._jsonfile[i]
+        yield self._jsonfile["body"]
 
     @staticmethod
     def load_from(abs_path : Path, doc_id : int) -> 'JSONFileDocument' :
