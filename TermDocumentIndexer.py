@@ -53,16 +53,6 @@ if __name__ == "__main__":
         corpus_path = Path(input('\033[1;3m' + "\nEnter valid path." + '\033[0m' + "\n\nEnter the path of corpus: "))
     d = DirectoryCorpus.load_directory(corpus_path)
 
-    # ----------------------------------------------------------------------------------------------------------------------
-    # file_list = [f for f in os.listdir(corpus_path) if os.path.isfile(f)]
-    # for i in file_list:
-    #     if ".pdf" in i:
-    #         d = DirectoryCorpus.load_directory(corpus_path, ".pdf")
-    #     elif ".txt" in i:
-    #         d = DirectoryCorpus.load_directory(corpus_path, ".txt")
-    # TODO: Send the list of Directory Corpus to index_corpus() function and loop thru every object to make just ONE index
-    # ----------------------------------------------------------------------------------------------------------------------
-
     index = index_corpus(d)
     print("\nType exit() to quit the search engine.\n")
     query = input("Enter the query you wanna search: ")
