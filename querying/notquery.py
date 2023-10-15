@@ -8,8 +8,8 @@ class NotQuery(QueryComponent):
     def is_positive(self) -> bool:
         return False
     
-    def get_postings(self, index) -> list[Posting]:
-        return self.component.get_postings(index)
+    def get_postings(self, index, processor) -> list[Posting]:
+        return self.component.get_postings(index, processor)
     
     def __str__(self):
         return f"NOT ({str(self.component)})"
