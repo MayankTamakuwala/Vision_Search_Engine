@@ -42,8 +42,13 @@ class PhraseLiteral(QueryComponent):
                         while positionPointer1 < len(p1Positions) and positionPointer2 < len(p2Positions):
                             if p1Positions[positionPointer1] == p2Positions[positionPointer2] - 1:
                                 mergedPostings.append(p2Positions[positionPointer2])
-                            positionPointer1 += 1
-                            positionPointer2 += 1
+                                positionPointer1 += 1
+                                positionPointer2 += 1
+                            else:
+                                if p1Positions[positionPointer1] > p2Positions[positionPointer2]:
+                                    positionPointer2 += 1
+                                elif p1Positions[positionPointer1] < p2Positions[positionPointer2]:
+                                    positionPointer1 += 1
 
                         if len(mergedPostings) > 0:
                             mergeList.append(Posting(p1[pointer1].get_doc_id(), positionList=mergedPostings))
