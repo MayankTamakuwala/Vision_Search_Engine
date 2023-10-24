@@ -56,9 +56,9 @@ class AndQuery(QueryComponent):
                         mergeList.append(Posting(p1[pointer1].get_doc_id()))
                         pointer1 += 1
 
-                    while pointer2 < len(p2):
-                        mergeList.append(Posting(p2[pointer2].get_doc_id()))
-                        pointer2 += 1
+                    # while pointer2 < len(p2):
+                    #     mergeList.append(Posting(p2[pointer2].get_doc_id()))
+                    #     pointer2 += 1
 
                     p1 = deepcopy(mergeList)
                 postingTrack += 1
