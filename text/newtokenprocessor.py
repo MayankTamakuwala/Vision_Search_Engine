@@ -1,6 +1,7 @@
 from .tokenprocessor import TokenProcessor
 from nltk.stem import snowball
 
+
 class NewTokenProcessor(TokenProcessor):
     """A NewTokenProcessor creates terms from tokens by removing all non-alphanumeric characters
     from the token, and converting it to all lowercase."""
