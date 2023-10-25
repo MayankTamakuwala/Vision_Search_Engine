@@ -1,5 +1,5 @@
 from .tokenprocessor import TokenProcessor
-from porter2stemmer import Porter2Stemmer
+from nltk.stem import snowball
 
 class NewTokenProcessor(TokenProcessor):
     """A NewTokenProcessor creates terms from tokens by removing all non-alphanumeric characters
@@ -37,7 +37,7 @@ class NewTokenProcessor(TokenProcessor):
         return list(set(subTokens))
 
     def normalize_type(self, type: list[str]) -> list[str]:
-        stemmer = Porter2Stemmer()
+        stemmer = snowball.EnglishStemmer()
         for i in range(len(type)):
             type[i] = stemmer.stem(type[i])
         return type

@@ -106,6 +106,8 @@ class BooleanQueryParser:
         all_subqueries = []
         start = 0
 
+        query = query.strip()
+
         while True:
             # Identify the next subquery: a portion of the query up to the next + sign.
             next_subquery = BooleanQueryParser._find_next_subquery(query, start)
