@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class TokenProcessor(ABC):
     """A TokenProcessor applies some rules of text processing and normalization to 
     to transform tokens into types and terms."""
