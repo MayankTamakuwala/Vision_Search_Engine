@@ -1,10 +1,12 @@
 from typing import Iterable
 from .index import Index
 from .postings import Posting
+
+
 class PositionalIndex(Index):
 
     def __init__(self):
-        self.positional_index : dict[str, list[Posting]] = dict()
+        self.positional_index: dict[str, list[Posting]] = dict()
 
     def add_term(self, term: str, documentId: int, position: int):
         if term not in self.positional_index:
@@ -23,3 +25,7 @@ class PositionalIndex(Index):
             return self.positional_index[term]
         else:
             return None
+
+    def __iter__(self):
+        for terms in self.positional_index:
+            yield terms

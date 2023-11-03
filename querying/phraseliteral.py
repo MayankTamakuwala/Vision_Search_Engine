@@ -49,6 +49,8 @@ class PhraseLiteral(QueryComponent):
                                     positionPointer2 += 1
                                 elif p1Positions[positionPointer1] < p2Positions[positionPointer2]:
                                     positionPointer1 += 1
+                                else:
+                                    positionPointer2 += 1
 
                         if len(mergedPostings) > 0:
                             mergeList.append(Posting(p1[pointer1].get_doc_id(), positionList=mergedPostings))
