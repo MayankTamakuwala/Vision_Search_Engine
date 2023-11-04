@@ -60,4 +60,4 @@ class DiskIndexWriter:
                     position_gap = p
                     self.postings_file.write(pack("i", position))
 
-        print("\nFILE CREATED\n")
+        print("FILE CREATED\n")

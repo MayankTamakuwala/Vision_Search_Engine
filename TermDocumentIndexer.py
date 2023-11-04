@@ -60,14 +60,18 @@ if __name__ == "__main__":
         # '\033[1;3m' is for bold and italic and '\033[0m' for closing tag\
         corpus_on_disk = Path(input('\033[1;3m' + "\nEnter valid choice." + '\033[0m' + "\n\nEnter the your choice: "))
 
+    index = None
+
     if corpus_on_disk == 1:
         print()
         corpus_path = Path(input(
             '\033[1;3m' + "Include the binary file name in the path" + '\033[0m' + "\n\nEnter the path of corpus: "))
-        while not corpus_path.exists() and corpus_path.stem.count(".bin") <= 0:
+        while not corpus_path.exists() and corpus_path.__str__().count(".bin") <= 0:
             corpus_path = Path(
                 input('\033[1;3m' + "\nEnter valid path.\n\nInclude the binary file name in the path"
                       + '\033[0m' + "\n\nEnter the path of corpus: "))
+
+        index = DiskPositionalIndex(corpus_path)
 
     else:
         print()
@@ -80,7 +84,7 @@ if __name__ == "__main__":
         while file_name == "" or (not file_name.isalnum()):
             file_name = input('\033[1;3m' + "\nEnter valid file name." + '\033[0m' + "\n\nEnter the file name you "
                                                                                      "wanna create: ")
-        file_path = Path(input("Enter the path you wanna save to file to:"))
+        file_path = Path(input("Enter the path you wanna save your file to:"))
         while not file_path.exists():
             corpus_path = Path(
                 input(
@@ -97,33 +101,31 @@ if __name__ == "__main__":
         client["Vocabularies"].drop_collection("TermTrack")
         client.close()
         diskIndexWriter = DiskIndexWriter(file_path).write_index(index)
-    # corpus_path = input("Corpus Path: ")
-    # d = DirectoryCorpus.load_directory(corpus_path)
-    # index = index_corpus(d)
+        index = DiskPositionalIndex(file_path)
 
-    # print("\nType exit() to quit the search engine.\n")
-    # query = input("Enter the query you wanna search: ")
-    # print()
-    #
-    # while query != "exit()":
-    #     if query != "":
-    #         booleanQuery = BooleanQueryParser.parse_query(query)
-    #         postings = booleanQuery.get_postings(index, NewTokenProcessor())
-    #         if (postings is not None) and len(postings) != 0:
-    #             for p in postings:
-    #                 print(d.get_document(p.doc_id))
-    #             print()
-    #             if len(postings) == 1:
-    #                 print("Postings for", '\033[1;3m' + query + '\033[0m', "are in",
-    #                       '\033[1;3m' + "1" + '\033[0m', "documents\n")
-    #             else:
-    #                 print("Postings for", '\033[1;3m' + query + '\033[0m', "are in",
-    #                       '\033[1;3m' + str(len(postings)) + '\033[0m', "documents\n")
-    #         else:
-    #             print("Postings not found for", '\033[1;3m' + query + '\033[0m', "\n")
-    #     else:
-    #         print("Your query is empty. Input valid query.\n")
-    #
-    #     query = input("Enter the query you wanna search: ")
-    #     print()
-    # print("Hope you liked my search engine!")
+    print("Type exit() to quit the search engine.\n")
+    query = input("Enter the query you wanna search: ")
+    print()
+
+    while query != "exit()":
+        if query != "":
+            booleanQuery = BooleanQueryParser.parse_query(query)
+            postings = booleanQuery.get_postings(index, NewTokenProcessor())
+            if (postings is not None) and len(postings) != 0:
+                for p in postings:
+                    print(d.get_document(p.doc_id))
+                print()
+                if len(postings) == 1:
+                    print("Postings for", '\033[1;3m' + query + '\033[0m', "are in",
+                          '\033[1;3m' + "1" + '\033[0m', "documents\n")
+                else:
+                    print("Postings for", '\033[1;3m' + query + '\033[0m', "are in",
+                          '\033[1;3m' + str(len(postings)) + '\033[0m', "documents\n")
+            else:
+                print("Postings not found for", '\033[1;3m' + query + '\033[0m', "\n")
+        else:
+            print("Your query is empty. Input valid query.\n")
+
+        query = input("Enter the query you wanna search: ")
+        print()
+    print("Hope you liked my search engine!")
