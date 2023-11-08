@@ -29,3 +29,6 @@ class PositionalIndex(Index):
     def __iter__(self):
         for terms in self.positional_index:
             yield terms
+
+    def __len__(self):
+        return len(self.positional_index)

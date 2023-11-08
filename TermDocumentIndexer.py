@@ -1,34 +1,16 @@
 from pathlib import Path
 from documents import DocumentCorpus, DirectoryCorpus
-from indexing import Index, TermDocumentIndex, InvertedIndex, PositionalIndex, DiskIndexWriter, DiskPositionalIndex
-from text import BasicTokenProcessor, EnglishTokenStream, NewTokenProcessor
+from indexing import Index, PositionalIndex, DiskIndexWriter, DiskPositionalIndex
+from text import EnglishTokenStream, NewTokenProcessor
 from querying import BooleanQueryParser
-import os
 import time
-from pymongo import MongoClient
 from indexing import get_client
-from typing import Optional
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, HTTPException
-
-"""This basic program builds a term-document matrix over the .txt files in 
-the same directory as this file."""
 
 
 def index_corpus(corpus: DocumentCorpus) -> Index:
     token_processor = NewTokenProcessor()
     print("\nStarted Indexing...")
     startTime = time.time()
-    # vocabulary = set()
-
-    # for d in corpus:
-    #     englishStream = EnglishTokenStream(d.get_content())
-    #     for word in englishStream:
-    #         vocabulary.add(token_processor.process_token(word))
-    # TODO:
-    #   Tokenize the document's content by creating an EnglishTokenStream around the document's .content()
-    #   Iterate through the token stream, processing each with token_processor's process_token method.
-    #   Add the processed token (a "term") to the vocabulary set.
 
     document_index = PositionalIndex()
     for i in corpus:
@@ -41,14 +23,6 @@ def index_corpus(corpus: DocumentCorpus) -> Index:
     endTime = time.time()
     print("\nTime take for indexing: {time:.2f} seconds".format(time=endTime - startTime))
     return document_index
-
-    # TODO:
-    #   After the above, next:
-    #   Create a TermDocumentIndex object, with the vocabulary you found, and the len() of the corpus.
-    #   Iterate through the documents in the corpus:
-    #   Tokenize each document's content, again.
-    #   Process each token.
-    #   Add each processed term to the index with .add_term().
 
 
 if __name__ == "__main__":
@@ -71,6 +45,7 @@ if __name__ == "__main__":
                 input('\033[1;3m' + "\nEnter valid path.\n\nInclude the binary file name in the path"
                       + '\033[0m' + "\n\nEnter the path of corpus: "))
 
+        d = DirectoryCorpus.load_directory("./nps")
         index = DiskPositionalIndex(corpus_path)
 
     else:
@@ -84,7 +59,7 @@ if __name__ == "__main__":
         while file_name == "" or (not file_name.isalnum()):
             file_name = input('\033[1;3m' + "\nEnter valid file name." + '\033[0m' + "\n\nEnter the file name you "
                                                                                      "wanna create: ")
-        file_path = Path(input("Enter the path you wanna save your file to:"))
+        file_path = Path(input("Enter the path you wanna save your file to: "))
         while not file_path.exists():
             corpus_path = Path(
                 input(

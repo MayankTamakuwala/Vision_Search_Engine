@@ -1,7 +1,6 @@
-import struct
+from struct import unpack
 from .postings import Posting
 from .index import Index
-from pymongo import MongoClient
 from indexing import get_client
 
 
@@ -25,20 +24,25 @@ class DiskPositionalIndex(Index):
 
             postings = []
 
-            dft = struct.unpack("i", file.read(4))[0]  # Read document frequency (dft)
+            dft = unpack("i", file.read(4))[0]
+            docId = 0
 
             for _ in range(dft):
-                docid_gap, tftd = struct.unpack("ii", file.read(8))  # Read docid gap and term frequency (tftd)
+                docid_gap, tftd = unpack("ii", file.read(8))
+                docid_gap += docId
+                docId = docid_gap
 
                 positions = []
-                position_gap = struct.unpack("i", file.read(4))[0]  # Read position gap
+                position_gap = unpack("i", file.read(4))[0]
 
                 positions.append(position_gap)
-
+                position = positions[0]
                 for _ in range(tftd - 1):
-                    position_gap = struct.unpack("i", file.read(4))[0]  # Read position gap
-                    positions.append(positions[-1] + position_gap)
+                    position_gap = unpack("i", file.read(4))[0]
+                    position_gap += position
+                    position = position_gap
+                    positions.append(position_gap)
 
-                postings.append(Posting(docid_gap, tftd, positions))
+                postings.append(Posting(docid_gap, positionList=positions))
 
         return postings

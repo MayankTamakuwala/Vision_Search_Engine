@@ -3,8 +3,7 @@ from pymongo import MongoClient
 
 
 def get_client():
-    CONNECTION_STRING = ("mongodb+srv://mayank:12345@searchenginevocab.hfbqnqe.mongodb.net/?retryWrites=true&w"
-                         "=majority")
+    CONNECTION_STRING = "mongodb://localhost:27017"
 
     return MongoClient(CONNECTION_STRING)
 
@@ -30,8 +29,8 @@ class DiskIndexWriter:
 
         print("\nCreating file on disk...\n")
 
+        print("The total terms in the index are: ", len(index))
         for term in index:
-
             byte_position = self.postings_file.tell()
 
             self.add_position(term, byte_position)
@@ -54,10 +53,10 @@ class DiskIndexWriter:
 
                 self.postings_file.write(pack("i", tftd))
 
-                position_gap = 0
-                for p in posting.positions:
-                    position = p - position_gap
-                    position_gap = p
-                    self.postings_file.write(pack("i", position))
+                position = 0
+                for p in posting.get_positions():
+                    position_gap = p - position
+                    position = p
+                    self.postings_file.write(pack("i", position_gap))
 
         print("FILE CREATED\n")
