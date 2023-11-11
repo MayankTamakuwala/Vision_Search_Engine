@@ -13,10 +13,11 @@ class PhraseLiteral(QueryComponent):
     def get_postings(self, index, processor) -> list[Posting]:
         temp = []
         for i in self.literals:
-            temp.append(i.get_postings(index, processor))
-
-        for _ in range(temp.count(None)):
-            temp.remove(None)
+            x = i.get_postings(index, processor)
+            if x is None:
+                return None
+            else:
+                temp.append(x)
 
         if len(temp) > 0:
             p1 = temp[0]

@@ -25,6 +25,15 @@ def index_corpus(corpus: DocumentCorpus) -> Index:
     return document_index
 
 
+def boolean_retrieval(query):
+    booleanQuery = BooleanQueryParser.parse_query(query)
+    postings = booleanQuery.get_postings(index, NewTokenProcessor())
+    if (postings is not None) and len(postings) != 0:
+        return postings
+    else:
+        return None
+
+
 if __name__ == "__main__":
     print("1) Select corpus from disk")
     print("2) Build corpus on disk\n")
@@ -32,7 +41,7 @@ if __name__ == "__main__":
 
     while corpus_on_disk not in [1, 2]:
         # '\033[1;3m' is for bold and italic and '\033[0m' for closing tag\
-        corpus_on_disk = Path(input('\033[1;3m' + "\nEnter valid choice." + '\033[0m' + "\n\nEnter the your choice: "))
+        corpus_on_disk = input('\033[1;3m' + "\nEnter valid choice." + '\033[0m' + "\n\nEnter the your choice: ")
 
     index = None
 
@@ -84,26 +93,34 @@ if __name__ == "__main__":
         diskIndexWriter = DiskIndexWriter(file_path).write_index(index)
         index = DiskPositionalIndex(file_path)
 
-    print("Type exit() to quit the search engine.\n")
+    print("\n1) Boolean Query")
+    print("2) Ranked Query\n")
+    boolean_ranked = int(input("Enter your choice: "))
+
+    while boolean_ranked not in [1, 2]:
+        boolean_ranked = input('\033[1;3m' + "\nEnter valid choice." + '\033[0m' + "\n\nEnter the your choice: ")
+
+    print("\n\nType exit() to quit the search engine.\n")
     query = input("Enter the query you wanna search: ")
     print()
 
     while query != "exit()":
         if query != "":
-            booleanQuery = BooleanQueryParser.parse_query(query)
-            postings = booleanQuery.get_postings(index, NewTokenProcessor())
-            if (postings is not None) and len(postings) != 0:
-                for p in postings:
-                    print(d.get_document(p.doc_id))
-                print()
-                if len(postings) == 1:
-                    print("Postings for", '\033[1;3m' + query + '\033[0m', "are in",
-                          '\033[1;3m' + "1" + '\033[0m', "documents\n")
+            if boolean_ranked == 1:
+                postings = boolean_retrieval(query)
+                if postings is not None:
+                    for p in postings:
+                        print(d.get_document(p.doc_id))
+                    print()
+                    print("Postings for", '\033[1;3m' + query + '\033[0m',
+                          "is in" if len(postings) == 1 else "are in",
+                          '\033[1;3m' + str(len(postings)) + '\033[0m',
+                          "document\n" if len(postings) == 1 else "documents\n")
                 else:
-                    print("Postings for", '\033[1;3m' + query + '\033[0m', "are in",
-                          '\033[1;3m' + str(len(postings)) + '\033[0m', "documents\n")
+                    print("Postings not found for", '\033[1;3m' + query + '\033[0m', "\n")
+
             else:
-                print("Postings not found for", '\033[1;3m' + query + '\033[0m', "\n")
+                print("Ranked Retrival in progress...")
         else:
             print("Your query is empty. Input valid query.\n")
 
