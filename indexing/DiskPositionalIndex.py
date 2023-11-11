@@ -1,7 +1,19 @@
-from struct import unpack
 from .postings import Posting
 from .index import Index
 from indexing import get_client
+from compression.variable_byte import vb_decode
+
+
+def file_content_decoder(f):
+    temp = bytearray()
+    x = f.read(1)
+    y = int.from_bytes(x, "big")
+    while y & 128 != 128:
+        temp.append(y)
+        x = f.read(1)
+        y = int.from_bytes(x, "big")
+    temp.append(y)
+    return vb_decode(temp)
 
 
 class DiskPositionalIndex(Index):
@@ -24,21 +36,23 @@ class DiskPositionalIndex(Index):
 
             postings = []
 
-            dft = unpack("i", file.read(4))[0]
+            dft = file_content_decoder(file)
             docId = 0
 
             for _ in range(dft):
-                docid_gap, tftd = unpack("ii", file.read(8))
+                docid_gap = file_content_decoder(file)
+
+                tftd = file_content_decoder(file)
                 docid_gap += docId
                 docId = docid_gap
 
                 positions = []
-                position_gap = unpack("i", file.read(4))[0]
+                position_gap = file_content_decoder(file)
 
                 positions.append(position_gap)
                 position = positions[0]
                 for _ in range(tftd - 1):
-                    position_gap = unpack("i", file.read(4))[0]
+                    position_gap = file_content_decoder(file)
                     position_gap += position
                     position = position_gap
                     positions.append(position_gap)

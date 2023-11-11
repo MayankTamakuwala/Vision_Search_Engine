@@ -1,5 +1,5 @@
-from struct import pack
 from pymongo import MongoClient
+from compression.variable_byte import vb_encode
 
 
 def get_client():
@@ -38,8 +38,7 @@ class DiskIndexWriter:
             postings_list = index.get_postings(term)
 
             dft = len(postings_list)
-
-            self.postings_file.write(pack("i", dft))
+            self.postings_file.write(bytes(vb_encode(dft)))
 
             docId_gap = 0
 
@@ -47,16 +46,17 @@ class DiskIndexWriter:
                 doc_id = posting.get_doc_id() - docId_gap
                 docId_gap = posting.get_doc_id()
 
-                self.postings_file.write(pack("i", doc_id))
+                self.postings_file.write(bytes(vb_encode(doc_id)))
 
                 tftd = len(posting.get_positions())
 
-                self.postings_file.write(pack("i", tftd))
+                self.postings_file.write(bytes(vb_encode(tftd)))
 
                 position = 0
                 for p in posting.get_positions():
                     position_gap = p - position
                     position = p
-                    self.postings_file.write(pack("i", position_gap))
+
+                    self.postings_file.write(bytes(vb_encode(position_gap)))
 
         print("FILE CREATED\n")
