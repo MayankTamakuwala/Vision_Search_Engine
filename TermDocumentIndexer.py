@@ -26,8 +26,8 @@ def index_corpus(corpus: DocumentCorpus) -> Index:
 
 
 if __name__ == "__main__":
-    print("1) Does the corpus exists on disk?")
-    print("2) Do you want to make corpus on disk?\n")
+    print("1) Select corpus from disk")
+    print("2) Build corpus on disk\n")
     corpus_on_disk = int(input("Enter your choice: "))
 
     while corpus_on_disk not in [1, 2]:
@@ -38,15 +38,25 @@ if __name__ == "__main__":
 
     if corpus_on_disk == 1:
         print()
-        corpus_path = Path(input(
-            '\033[1;3m' + "Include the binary file name in the path" + '\033[0m' + "\n\nEnter the path of corpus: "))
-        while not corpus_path.exists() and corpus_path.__str__().count(".bin") <= 0:
+        corpus_path = Path(input("Enter the path of corpus: "))
+        while not corpus_path.exists():
             corpus_path = Path(
-                input('\033[1;3m' + "\nEnter valid path.\n\nInclude the binary file name in the path"
+                input('\033[1;3m' + "\nEnter valid path."
                       + '\033[0m' + "\n\nEnter the path of corpus: "))
 
-        d = DirectoryCorpus.load_directory("./nps")
-        index = DiskPositionalIndex(corpus_path)
+        file_path = Path(input("Enter the path of directory where postings.bin is saved: "))
+        while not file_path.exists():
+            file_path = Path(
+                input('\033[1;3m' + "\nEnter valid path."
+                      + '\033[0m' + "\n\nEnter the path of directory where postings.bin is saved: "))
+
+        if file_path.__str__()[0:2] != "./":
+            file_path = Path("./" + file_path.__str__() + "/" + "postings.bin")
+        else:
+            file_path = Path(file_path.__str__() + "/" + "postings.bin")
+
+        d = DirectoryCorpus.load_directory(corpus_path)
+        index = DiskPositionalIndex(file_path)
 
     else:
         print()
@@ -55,10 +65,6 @@ if __name__ == "__main__":
             corpus_path = Path(
                 input('\033[1;3m' + "\nEnter valid path." + '\033[0m' + "\n\nEnter the path of corpus: "))
 
-        file_name = input("Enter the file name you wanna create: ")
-        while file_name == "" or (not file_name.isalnum()):
-            file_name = input('\033[1;3m' + "\nEnter valid file name." + '\033[0m' + "\n\nEnter the file name you "
-                                                                                     "wanna create: ")
         file_path = Path(input("Enter the path you wanna save your file to: "))
         while not file_path.exists():
             corpus_path = Path(
@@ -66,9 +72,9 @@ if __name__ == "__main__":
                     '\033[1;3m' + "\nEnter valid path." + '\033[0m' + "\n\nEnter the path you wanna save to file to: "))
 
         if file_path.__str__()[0:2] != "./":
-            file_path = Path("./" + file_path.__str__() + "/" + file_name + ".bin")
+            file_path = Path("./" + file_path.__str__() + "/" + "postings.bin")
         else:
-            file_path = Path(file_path.__str__() + "/" + file_name + ".bin")
+            file_path = Path(file_path.__str__() + "/" + "postings.bin")
 
         d = DirectoryCorpus.load_directory(corpus_path)
         index = index_corpus(d)
