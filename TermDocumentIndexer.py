@@ -90,7 +90,7 @@ if __name__ == "__main__":
         client = get_client()
         client["Vocabularies"].drop_collection("TermTrack")
         client.close()
-        diskIndexWriter = DiskIndexWriter(file_path).write_index(index)
+        DiskIndexWriter(file_path).write_index(index)
         index = DiskPositionalIndex(file_path)
 
     print("\n1) Boolean Query")
