@@ -53,19 +53,13 @@ if __name__ == "__main__":
                 input('\033[1;3m' + "\nEnter valid path."
                       + '\033[0m' + "\n\nEnter the path of corpus: "))
 
-        file_path = Path(input("Enter the path of directory where postings.bin is saved: "))
-        while not file_path.exists():
-            file_path = Path(
-                input('\033[1;3m' + "\nEnter valid path."
-                      + '\033[0m' + "\n\nEnter the path of directory where postings.bin is saved: "))
-
-        if file_path.__str__()[0:2] != "./":
-            file_path = Path("./" + file_path.__str__() + "/" + "postings.bin")
+        if str(corpus_path)[0] == "./":
+            file_str = str(Path(corpus_path)) + "/" + "postings.bin"
         else:
-            file_path = Path(file_path.__str__() + "/" + "postings.bin")
+            file_str = "./" + str(Path(corpus_path)) + "/" + "postings.bin"
 
         d = DirectoryCorpus.load_directory(corpus_path)
-        index = DiskPositionalIndex(file_path)
+        index = DiskPositionalIndex(file_str)
 
     else:
         print()
@@ -74,24 +68,18 @@ if __name__ == "__main__":
             corpus_path = Path(
                 input('\033[1;3m' + "\nEnter valid path." + '\033[0m' + "\n\nEnter the path of corpus: "))
 
-        file_path = Path(input("Enter the path you wanna save your file to: "))
-        while not file_path.exists():
-            corpus_path = Path(
-                input(
-                    '\033[1;3m' + "\nEnter valid path." + '\033[0m' + "\n\nEnter the path you wanna save to file to: "))
-
-        if file_path.__str__()[0:2] != "./":
-            file_path = Path("./" + file_path.__str__() + "/" + "postings.bin")
+        if str(corpus_path)[0] == "./":
+            file_str = str(Path(corpus_path)) + "/" + "postings.bin"
         else:
-            file_path = Path(file_path.__str__() + "/" + "postings.bin")
+            file_str = "./" + str(Path(corpus_path)) + "/" + "postings.bin"
 
         d = DirectoryCorpus.load_directory(corpus_path)
         index = index_corpus(d)
         client = get_client()
-        client["Vocabularies"].drop_collection("TermTrack")
+        client["Vocabularies"].drop_collection("1" + file_str[1:] if file_str[0] == "." else file_str)
         client.close()
-        DiskIndexWriter(file_path).write_index(index)
-        index = DiskPositionalIndex(file_path)
+        DiskIndexWriter(file_str).write_index(index)
+        index = DiskPositionalIndex(file_str)
 
     print("\n1) Boolean Query")
     print("2) Ranked Query\n")
