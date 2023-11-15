@@ -1,5 +1,6 @@
 from pymongo import MongoClient, ASCENDING
 from compression.variable_byte import vb_encode
+from pathlib import Path
 
 
 def get_client():
@@ -12,9 +13,9 @@ class DiskIndexWriter:
 
     def __init__(self, postings_path):
         self.__client = get_client()
-        self.__collection = self.__client["Vocabularies"]["TermTrack"]
-        self.__collection.create_index([("term", ASCENDING)],name="term_index")
-        self.postings_file = open(postings_path, "wb")
+        self.__collection = self.__client["Vocabularies"]["1" + postings_path[1:] if postings_path[0] == "." else postings_path]
+        self.__collection.create_index([("term", ASCENDING)], name="term_index")
+        self.postings_file = open(Path(postings_path), "wb")
 
     def __del__(self):
         self.__client.close()

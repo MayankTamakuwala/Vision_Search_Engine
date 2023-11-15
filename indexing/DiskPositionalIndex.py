@@ -2,6 +2,7 @@ from .postings import Posting
 from .index import Index
 from indexing import get_client
 from compression.variable_byte import vb_decode
+from pathlib import Path
 
 
 def file_content_decoder(f):
@@ -20,7 +21,7 @@ class DiskPositionalIndex(Index):
     def __init__(self, path):
         self.path = path
         self.__client = get_client()
-        self.__collection = self.__client["Vocabularies"]["TermTrack"]
+        self.__collection = self.__client["Vocabularies"]["1" + path[1:] if path[0] == "." else path]
 
     def get_postings(self, term):
 
@@ -31,7 +32,7 @@ class DiskPositionalIndex(Index):
         else:
             byte_position = byte_position_object["byte_position"]
 
-        with open(self.path, "rb") as file:
+        with open(Path(self.path), "rb") as file:
             file.seek(byte_position)
 
             postings = []
