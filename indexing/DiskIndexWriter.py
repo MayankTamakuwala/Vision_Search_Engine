@@ -1,12 +1,7 @@
-from pymongo import MongoClient, ASCENDING
+from pymongo import ASCENDING
 from compression.variable_byte import vb_encode
 from pathlib import Path
-
-
-def get_client():
-    CONNECTION_STRING = "mongodb://localhost:27017"
-
-    return MongoClient(CONNECTION_STRING)
+from database import get_client
 
 
 class DiskIndexWriter:

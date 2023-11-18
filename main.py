@@ -1,6 +1,6 @@
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException, BackgroundTasks
-from indexing import get_client
+from database import get_client
 from api_helper import create_index_job, create_index, boolean_retrieval
 import bson
 from uuid import UUID

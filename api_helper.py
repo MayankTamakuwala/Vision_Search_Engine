@@ -4,7 +4,7 @@ from indexing import Index, PositionalIndex, DiskIndexWriter, DiskPositionalInde
 from text import EnglishTokenStream, NewTokenProcessor
 from querying import BooleanQueryParser
 import time
-from indexing import get_client
+from database import get_client
 import uuid
 import bson
 

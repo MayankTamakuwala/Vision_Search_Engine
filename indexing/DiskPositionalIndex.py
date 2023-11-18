@@ -1,6 +1,6 @@
 from .postings import Posting
 from .index import Index
-from indexing import get_client
+from database import get_client
 from compression.variable_byte import vb_decode
 from pathlib import Path
 
