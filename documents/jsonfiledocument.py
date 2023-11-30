@@ -2,6 +2,8 @@ from pathlib import Path
 from typing import Iterable
 from .document import Document
 import json
+
+
 class JSONFileDocument(Document):
     """
     Represents a document that is saved as a simple text file in the local file system.
@@ -13,7 +15,7 @@ class JSONFileDocument(Document):
 
     @property
     def title(self) -> str:
-        return self.path.stem
+        return self._jsonfile["title"]
 
     # returns TextIOWrapper
     def get_content(self) -> Iterable[str]:
