@@ -15,7 +15,7 @@ class JSONFileDocument(Document):
 
     @property
     def title(self) -> str:
-        return self._jsonfile["title"]
+        return self._jsonfile["title"] + " ("+self.path.stem+".json)"
 
     # returns TextIOWrapper
     def get_content(self) -> Iterable[str]:

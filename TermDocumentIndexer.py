@@ -117,7 +117,6 @@ if __name__ == "__main__":
         while default_probab not in [1, 2]:
             boolean_ranked = input('\033[1;3m' + "\nEnter valid choice." + '\033[0m' + "\n\nEnter the your choice: ")
 
-
     print("\n\nType exit() to quit the search engine.\n")
     query = input("Enter the query you wanna search: ")
     print()
@@ -143,8 +142,6 @@ if __name__ == "__main__":
                 else:
                     ret = ProbabilityRetrieval(file_str)
 
-                q = PriorityQueue()
-
                 scores = {}
                 split_query = query.split(" ")
                 wqt = 0
@@ -162,46 +159,24 @@ if __name__ == "__main__":
                         else:
                             scores[j.get_doc_id()] = [wdt*wqt, wdt]
 
-                scoreOutput = {}
-                # print("Mayank1:", len(scores))
-                # temp = 1
+                q = PriorityQueue()
                 for i in scores:
-                    # print(temp)
                     scores[i][0] = scores[i][0]/ret.get_Ld(i)
-                    # temp += 1
-                    # print(scores[i][0])
-                    # q.put((scores[i][0], (i, scores[i][1])))
+                    q.put((1/scores[i][0], (i, scores[i][1], scores[i][0])))
 
-                    scoreOutput[(i, scores[i][0])] = scores[i][1]
-
-                # print("Sorting")
-                scoreOutput = dict(sorted(scoreOutput.items(), key=lambda item: item[0][1], reverse=True))
-
-                # print("Mayank:", len(scores) == len(scoreOutput))
-
-                # print(f"Total number of documents are {len(q.queue)}\n")
-                # print(f"{len(q.queue)} postings for term \"{query}\"; with wQt = {wqt:.5f}")
-                #
-                # for i in range(10):
-                #     print(f"(wdt, L_d, scores): {d.get_document(q.queue[len(q.queue) - 1 - i][1][0])} = "
-                #           f"({q.queue[len(q.queue) - 1 - i][1][1]:.5f}, "
-                #           f"{ret.get_Ld(q.queue[len(q.queue) - 1 - i][1][0]):.5f}, "
-                #           f"{q.queue[len(q.queue) - 1 - i][0]:.5f})")
-
-                print(f"Total number of documents are {len(scoreOutput)}\n")
-                print(f"{len(scoreOutput)} postings for term \"{query}\"; with wQt = {wqt:.5f}")
+                print(f"Total number of documents are {q.qsize()}\n")
+                print(f"{q.qsize()} postings for query \"{query}\"; with wQt = {wqt:.5f}")
 
                 c = 1
-                for i in scoreOutput:
-
-                    print(f"{d.get_document(i[0])} = "
-                          f"(wdt={scoreOutput[i]:.5f}, "
-                          f"L_d={ret.get_Ld(i[0]):.5f}, "
-                          f"scores={i[1]:.5f})")
+                for i in range(10):
+                    temp = q.get()
+                    print(f"{d.get_document(temp[1][0])} = "
+                          f"(wdt={temp[1][1]:.5f}, "
+                          f"L_d={ret.get_Ld(temp[1][0]):.5f}, "
+                          f"scores={temp[1][2]:.5f})")
                     c += 1
-                    if c == 11:
+                    if c >= 11:
                         break
-
                 print()
         else:
             print("Your query is empty. Input valid query.\n")

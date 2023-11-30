@@ -9,8 +9,6 @@ class ProbabilityRetrieval(RankedRetrieval):
         self.collection = self.client["Weights"]["1" + path[1:] if path[0] == "." else path]
 
     def get_wdt(self, tftd, docid):
-        # client = get_client()
-        # collection = client["Weights"]["1" + path[1:] if path[0] == "." else path]
         doclength_d = self.collection.find_one({"doc_id": docid})["token_count"]
         doclength_A = self.collection.find_one({"type": "Length A"})["docLengthA"]
         num = (2.2 * tftd)
