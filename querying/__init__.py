@@ -6,4 +6,5 @@ from querying.notquery import NotQuery
 from querying.phraseliteral import PhraseLiteral
 from querying.booleanqueryparser import BooleanQueryParser
 from querying.rankedretrieval import RankedRetrieval
-# from querying.defaultrankedretrieval import DefaultRetrieval
+from querying.defaultrankedretrieval import DefaultRetrieval
+from querying.probabilityretrieval import ProbabilityRetrieval
