@@ -39,7 +39,7 @@ def index_corpus(corpus: DocumentCorpus, weight_path, db_client) -> Index:
         # byte_position = file.tell()
         collection.insert_one({"doc_id": i.id, "token_count": token_count[i.id], "L_d": ld})
         # file.write(pack("d", ld))
-    collection.insert_one({"docLengthA": sum(list(token_count.values()))/len(d), "type": "Length A"})
+    collection.insert_one({"docLengthA": sum(list(token_count.values()))/len(corpus), "type": "Length A"})
     endTime = time.time()
     print("\nTime take for indexing: {time:.2f} seconds".format(time=endTime - startTime))
     return document_index
