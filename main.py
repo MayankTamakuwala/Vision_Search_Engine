@@ -127,7 +127,7 @@ def ranked_retrieval_helper(temp, prompt, using_field, default_probab):
             c = 1
             for i in range(10):
                 top_item = result[0].get()
-                res.append((result[1].get_document(top_item[1][0]).title, top_item[1][2]))
+                res.append((result[1].get_document(top_item[1][0]).title, round(top_item[1][2], 4)))
                 c += 1
                 if c >= 11:
                     break

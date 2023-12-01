@@ -141,6 +141,3 @@ def ranked_retrieval(corpus_path, file_path, query, default_probab):
     if q.qsize() == 0:
         return None
     return [q, d]
-
-# if __name__ == "__main__":
-#     boolean_retrieval("./corpus", "./corpus", "postings")
