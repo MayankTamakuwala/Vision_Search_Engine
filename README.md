@@ -1,1 +1,1 @@
-# CECS429_Milestone_1
+# Vision Search Engine
