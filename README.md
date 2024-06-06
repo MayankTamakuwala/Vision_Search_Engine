@@ -14,7 +14,7 @@
 
 Vision Search Engine is a sophisticated and versatile search engine designed to provide highly accurate and efficient search capabilities. Leveraging a suite of advanced algorithms and techniques, this project is equipped to handle a wide array of search functionalities, ensuring precise and relevant results. Key features include tokenization, normalization, boolean retrieval, ranked retrieval, and positional indexing.
 
-The engine employs Variable-Byte Encoding for data compression and On-disk Indexing to manage large datasets efficiently. It supports probabilistic retrieval models, stemming and lemmatization for text processing, stopword removal, and synonym handling to enhance search relevance. Additional features such as phrase searching, wildcard queries, real-time indexing, and multi-threaded query processing further enhance its performance and flexibility.
+The engine employs Variable-Byte Encoding for data compression and On-disk Indexing to manage large datasets efficiently. It supports probabilistic retrieval models, stemming and lemmatization for text processing, stopword removal, and synonym handling to enhance search relevance. Additional features such as phrase searching, wildcard queries, real-time indexing, multi-threaded query processing, and K-means clustering further enhance its performance and flexibility.
 
 With an organized project structure, Vision Search Engine is designed to handle data from diverse sources, including JSON, TXT, and PDF documents. The project also supports API integration, making it easy to incorporate into other applications.
 
@@ -32,6 +32,7 @@ With an organized project structure, Vision Search Engine is designed to handle 
 - Stopword Removal: Eliminates common words that do not contribute to search relevance.
 - Synonym Handling: Recognizes and processes synonyms to improve search results.
 - Phrase Searching: Supports searching for exact phrases.
+- K-means Clustering: Groups similar documents together for improved search relevance and analysis.
 - Wildcard Queries: Allows for flexible search patterns with wildcards.
 - Real-time Indexing: Supports real-time updates to the index.
 - Multi-threaded Query Processing: Enhances performance with concurrent query handling.
